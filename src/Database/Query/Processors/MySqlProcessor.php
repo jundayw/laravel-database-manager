@@ -1,6 +1,6 @@
 <?php
 
-namespace Nacosvel\DatabaseManager\Query\Processors;
+namespace Nacosvel\DatabaseManager\Database\Query\Processors;
 
 use Illuminate\Database\Query\Processors\MySqlProcessor as Processor;
 use Illuminate\Contracts\Database\Query\Builder;

@@ -5,7 +5,7 @@ namespace Nacosvel\DatabaseManager;
 use Illuminate\Database\Connection;
 use Illuminate\Support\ServiceProvider;
 use Nacosvel\Contracts\DatabaseManager\DatabaseManagerInterface;
-use Nacosvel\DatabaseManager\Connectors\MySqlConnection;
+use Nacosvel\DatabaseManager\Database\Connectors\MySqlConnection;
 
 class DatabaseManagerServiceProvider extends ServiceProvider
 {

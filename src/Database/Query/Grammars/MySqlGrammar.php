@@ -1,6 +1,6 @@
 <?php
 
-namespace Nacosvel\DatabaseManager\Query\Grammars;
+namespace Nacosvel\DatabaseManager\Database\Query\Grammars;
 
 use Illuminate\Database\Query\Grammars\MySqlGrammar as Grammar;
 

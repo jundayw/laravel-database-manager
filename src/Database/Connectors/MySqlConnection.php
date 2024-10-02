@@ -1,12 +1,12 @@
 <?php
 
-namespace Nacosvel\DatabaseManager\Connectors;
+namespace Nacosvel\DatabaseManager\Database\Connectors;
 
 use Illuminate\Database\MySqlConnection as Connection;
-use Nacosvel\DatabaseManager\Concerns\ResourceManagerXA;
-use Nacosvel\DatabaseManager\Query\Builder;
-use Nacosvel\DatabaseManager\Query\Grammars\MySqlGrammar;
-use Nacosvel\DatabaseManager\Query\Processors\MySqlProcessor;
+use Nacosvel\DatabaseManager\Database\Concerns\ResourceManagerXA;
+use Nacosvel\DatabaseManager\Database\Query\Builder;
+use Nacosvel\DatabaseManager\Database\Query\Grammars\MySqlGrammar;
+use Nacosvel\DatabaseManager\Database\Query\Processors\MySqlProcessor;
 
 class MySqlConnection extends Connection
 {

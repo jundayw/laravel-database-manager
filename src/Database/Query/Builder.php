@@ -1,6 +1,6 @@
 <?php
 
-namespace Nacosvel\DatabaseManager\Query;
+namespace Nacosvel\DatabaseManager\Database\Query;
 
 class Builder extends \Illuminate\Database\Query\Builder
 {

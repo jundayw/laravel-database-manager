@@ -1,6 +1,6 @@
 <?php
 
-namespace Nacosvel\DatabaseManager\Concerns;
+namespace Nacosvel\DatabaseManager\Database\Concerns;
 
 trait ResourceManagerXA
 {
