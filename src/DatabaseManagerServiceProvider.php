@@ -19,7 +19,6 @@ class DatabaseManagerServiceProvider extends ServiceProvider
         Connection::resolverFor('mysql', function ($connection, $database, $prefix, $config) {
             return new MySqlConnection($connection, $database, $prefix, $config);
         });
-
         $this->app->bind(DatabaseManagerInterface::class, function ($app) {
             return new DatabaseManager($app['db']);
         });

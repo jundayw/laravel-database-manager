@@ -39,6 +39,7 @@ class MySqlConnection extends Connection
      *
      * @return Builder
      */
+    #[\Override]
     public function query(): Builder
     {
         return new Builder(
@@ -72,6 +73,18 @@ class MySqlConnection extends Connection
     public function statement($query, $bindings = []): bool
     {
         return parent::statement($query, $bindings);
+    }
+
+    /**
+     * Get an option from the configuration options.
+     *
+     * @param string|null $option
+     *
+     * @return mixed
+     */
+    public function getDatabaseConfig(string $option = null): mixed
+    {
+        return $this->getConfig($option);
     }
 
 }
