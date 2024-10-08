@@ -3,7 +3,7 @@
     "description": "Nacosvel Database Manager Implementation for Laravel.",
     "keywords": [
         "Nacosvel Database Manager Implementation for Laravel",
-        "NNacosvel Database Manager"
+        "Nacosvel Database Manager"
     ],
     "type": "library",
     "license": "MIT",
@@ -14,16 +14,12 @@
         }
     ],
     "require": {
-        "php": ">=8.0",
-        "nacosvel/database-manager": "^1.0"
+        "php": ">=8.0"
     },
     "autoload": {
         "psr-4": {
             "Nacosvel\\DatabaseManager\\": "src/"
         }
-    },
-    "provide": {
-        "nacosvel/database-manager-implementation": "1.0"
     },
     "extra": {
         "branch-alias": {
