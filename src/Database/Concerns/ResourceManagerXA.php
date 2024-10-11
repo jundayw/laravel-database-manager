@@ -11,10 +11,10 @@ trait ResourceManagerXA
      *
      * @return void
      */
-    public function startTransactionXa(string $xid): void
+    public function xaBeginTransaction(string $xid): void
     {
         $this->getPdo()->exec(
-            $this->getDefaultQueryGrammar()->compileStartXa($xid)
+            $this->getDefaultQueryGrammar()->compileXaStart($xid)
         );
     }
 
@@ -25,10 +25,10 @@ trait ResourceManagerXA
      *
      * @return void
      */
-    public function endTransactionXa(string $xid): void
+    public function xaEndTransaction(string $xid): void
     {
         $this->getPdo()->exec(
-            $this->getDefaultQueryGrammar()->compileEndXa($xid)
+            $this->getDefaultQueryGrammar()->compileXaEnd($xid)
         );
     }
 
@@ -39,10 +39,10 @@ trait ResourceManagerXA
      *
      * @return void
      */
-    public function prepareXa(string $xid): void
+    public function xaPrepare(string $xid): void
     {
         $this->getPdo()->exec(
-            $this->getDefaultQueryGrammar()->compilePrepareXa($xid)
+            $this->getDefaultQueryGrammar()->compileXaPrepare($xid)
         );
     }
 
@@ -53,10 +53,10 @@ trait ResourceManagerXA
      *
      * @return void
      */
-    public function commitXa(string $xid): void
+    public function xaCommit(string $xid): void
     {
         $this->getPdo()->exec(
-            $this->getDefaultQueryGrammar()->compileCommitXa($xid)
+            $this->getDefaultQueryGrammar()->compileXaCommit($xid)
         );
     }
 
@@ -67,10 +67,10 @@ trait ResourceManagerXA
      *
      * @return void
      */
-    public function rollbackXa(string $xid): void
+    public function xaRollBack(string $xid): void
     {
         $this->getPdo()->exec(
-            $this->getDefaultQueryGrammar()->compileRollbackXa($xid)
+            $this->getDefaultQueryGrammar()->compileXaRollback($xid)
         );
     }
 

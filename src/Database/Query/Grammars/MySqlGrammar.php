@@ -39,7 +39,7 @@ class MySqlGrammar extends Grammar
      *
      * @return string The SQL statement to start an XA transaction.
      */
-    public function compileStartXa(string $xid): string
+    public function compileXaStart(string $xid): string
     {
         return "XA START '{$xid}'";
     }
@@ -51,7 +51,7 @@ class MySqlGrammar extends Grammar
      *
      * @return string The SQL statement to end an XA transaction.
      */
-    public function compileEndXa(string $xid): string
+    public function compileXaEnd(string $xid): string
     {
         return "XA END '{$xid}'";
     }
@@ -63,7 +63,7 @@ class MySqlGrammar extends Grammar
      *
      * @return string The SQL statement to prepare an XA transaction.
      */
-    public function compilePrepareXa(string $xid): string
+    public function compileXaPrepare(string $xid): string
     {
         return "XA PREPARE '{$xid}'";
     }
@@ -75,7 +75,7 @@ class MySqlGrammar extends Grammar
      *
      * @return string The SQL statement to commit an XA transaction.
      */
-    public function compileCommitXa(string $xid): string
+    public function compileXaCommit(string $xid): string
     {
         return "XA COMMIT '{$xid}'";
     }
@@ -87,7 +87,7 @@ class MySqlGrammar extends Grammar
      *
      * @return string The SQL statement to roll back an XA transaction.
      */
-    public function compileRollbackXa(string $xid): string
+    public function compileXaRollback(string $xid): string
     {
         return "XA ROLLBACK '{$xid}'";
     }
