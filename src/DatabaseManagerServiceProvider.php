@@ -45,7 +45,7 @@ class DatabaseManagerServiceProvider extends ServiceProvider
      */
     public function provides(): array
     {
-        return [];
+        return [TransactionCoordinatorInterface::class, TransactionManagerInterface::class];
     }
 
 }
