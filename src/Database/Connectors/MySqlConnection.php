@@ -7,6 +7,7 @@ use Nacosvel\DatabaseManager\Database\Concerns\ResourceManagerXA;
 use Nacosvel\DatabaseManager\Database\Query\Builder;
 use Nacosvel\DatabaseManager\Database\Query\Grammars\MySqlGrammar;
 use Nacosvel\DatabaseManager\Database\Query\Processors\MySqlProcessor;
+use Nacosvel\DatabaseManager\Facades\TM;
 
 class MySqlConnection extends Connection
 {
@@ -58,7 +59,12 @@ class MySqlConnection extends Connection
     #[\Override]
     public function affectingStatement($query, $bindings = []): int
     {
-        return parent::affectingStatement($query, $bindings);
+        $result = parent::affectingStatement($query, $bindings);
+
+        TM::queries($query, $bindings, $this->getDatabaseConfig(), 0, $result, $this->query()->getCheckResult());
+        $this->query()->setCheckResult(false);
+
+        return $result;
     }
 
     /**
@@ -72,7 +78,12 @@ class MySqlConnection extends Connection
     #[\Override]
     public function statement($query, $bindings = []): bool
     {
-        return parent::statement($query, $bindings);
+        $result = parent::statement($query, $bindings);
+
+        TM::queries($query, $bindings, $this->getDatabaseConfig(), $this->getRawPdo()->lastInsertId(), $result, $this->query()->getCheckResult());
+        $this->query()->setCheckResult(false);
+
+        return $result;
     }
 
     /**
