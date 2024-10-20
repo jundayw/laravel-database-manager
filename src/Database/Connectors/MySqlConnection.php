@@ -61,7 +61,7 @@ class MySqlConnection extends Connection
     {
         $result = parent::affectingStatement($query, $bindings);
 
-        TM::queries($query, $bindings, $this->getDatabaseConfig(), 0, $result, $this->query()->getCheckResult());
+        TM::queries($query, $bindings, $this->getConfig(), 0, $result, $this->query()->getCheckResult());
         $this->query()->setCheckResult(false);
 
         return $result;
@@ -80,7 +80,7 @@ class MySqlConnection extends Connection
     {
         $result = parent::statement($query, $bindings);
 
-        TM::queries($query, $bindings, $this->getDatabaseConfig(), $this->getRawPdo()->lastInsertId(), $result, $this->query()->getCheckResult());
+        TM::queries($query, $bindings, $this->getConfig(), $this->getRawPdo()->lastInsertId(), $result, $this->query()->getCheckResult());
         $this->query()->setCheckResult(false);
 
         return $result;
