@@ -3,6 +3,8 @@
 namespace Nacosvel\DatabaseManager\Database\Query\Grammars;
 
 use Illuminate\Database\Query\Grammars\MySqlGrammar as Grammar;
+use Illuminate\Support\Facades\DB;
+use Nacosvel\DatabaseManager\Facades\TM;
 
 class MySqlGrammar extends Grammar
 {
@@ -16,7 +18,11 @@ class MySqlGrammar extends Grammar
     #[\Override]
     public function compileSavepoint($name): string
     {
-        return 'SAVEPOINT ' . $name;
+        $statement = 'SAVEPOINT ' . $name;
+        if (TM::isInternalInvocation()) {
+            TM::queries($statement, [], DB::getConfig());
+        }
+        return $statement;
     }
 
     /**
@@ -29,7 +35,11 @@ class MySqlGrammar extends Grammar
     #[\Override]
     public function compileSavepointRollBack($name): string
     {
-        return 'ROLLBACK TO SAVEPOINT ' . $name;
+        $statement = 'ROLLBACK TO SAVEPOINT ' . $name;
+        if (TM::isInternalInvocation()) {
+            TM::queries($statement, [], DB::getConfig());
+        }
+        return $statement;
     }
 
     /**
