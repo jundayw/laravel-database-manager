@@ -5,9 +5,9 @@ namespace Nacosvel\DatabaseManager;
 use Illuminate\Database\Connection;
 use Illuminate\Support\ServiceProvider;
 use Nacosvel\Contracts\DatabaseManager\DatabaseManagerInterface;
-use Nacosvel\Contracts\DatabaseManager\TransactionCoordinatorInterface;
-use Nacosvel\Contracts\DatabaseManager\TransactionManagerInterface;
 use Nacosvel\DatabaseManager\Database\Connectors\MySqlConnection;
+use Nacosvel\TransactionManagerServices\ResourceManagerServices;
+use Nacosvel\TransactionManagerServices\TransactionManagerServices;
 
 class DatabaseManagerServiceProvider extends ServiceProvider
 {
@@ -18,14 +18,33 @@ class DatabaseManagerServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        if (false === $this->app->configurationIsCached()) {
+            $this->registerConfig();
+        }
         Connection::resolverFor('mysql', function ($connection, $database, $prefix, $config) {
             return new MySqlConnection($connection, $database, $prefix, $config);
         });
-        $this->app->bind(DatabaseManagerInterface::class, function () {
-            return new DatabaseManager($this->app['db']);
+        $this->app->singleton(DatabaseManagerInterface::class, function ($app) {
+            $multipleDatabaseManager = new MultipleManager($app);
+            return $multipleDatabaseManager->extend($multipleDatabaseManager->getDefaultInstance(), function ($app, $config) {
+                return new DatabaseManager($app['db']);
+            })->extend(TransactionManagerServices::class, function ($app, $config) {
+                return new TransactionManager($this->instance(), new TransactionManagerServices);
+            })->extend(ResourceManagerServices::class, function ($app, $config) {
+                return new TransactionManager($this->instance(), new ResourceManagerServices);
+            });
         });
-        $this->app->singleton(TransactionCoordinatorInterface::class, TransactionCoordinator::class);
-        $this->app->singleton(TransactionManagerInterface::class, TransactionManager::class);
+        $this->app->singleton(TransactionManagerServices::class, function () {
+            return app(DatabaseManagerInterface::class)->instance(TransactionManagerServices::class);
+        });
+        $this->app->singleton(ResourceManagerServices::class, function () {
+            return app(DatabaseManagerInterface::class)->instance(ResourceManagerServices::class);
+        });
+    }
+
+    protected function registerConfig(): void
+    {
+        $this->mergeConfigFrom(__DIR__ . '/../config/database-manager.php', 'database-manager');
     }
 
     /**
@@ -35,7 +54,11 @@ class DatabaseManagerServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        if ($this->app->runningInConsole()) {
+            $this->publishes([
+                __DIR__ . '/../config/database-manager.php' => config_path('database-manager.php'),
+            ], 'database-manager-config');
+        }
     }
 
     /**
@@ -45,7 +68,11 @@ class DatabaseManagerServiceProvider extends ServiceProvider
      */
     public function provides(): array
     {
-        return [TransactionCoordinatorInterface::class, TransactionManagerInterface::class];
+        return [
+            DatabaseManagerInterface::class,
+            TransactionManagerServices::class,
+            ResourceManagerServices::class,
+        ];
     }
 
 }

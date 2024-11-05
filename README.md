@@ -14,6 +14,20 @@ You can install the package via [Composer](https://getcomposer.org/):
 composer require nacosvel/laravel-database-manager
 ```
 
+### Publish Command
+
+You can publish configuration file using the `vendor:publish` command:
+
+```shell
+php artisan vendor:publish --tag=database-manager-config
+```
+
+or
+
+```shell
+php artisan vendor:publish --provider="Nacosvel\DatabaseManager\DatabaseManagerServiceProvider"
+```
+
 ## License
 
 Nacosvel Database Manager Implementation for Laravel is made available under the MIT License (MIT). Please see [License File](LICENSE) for more

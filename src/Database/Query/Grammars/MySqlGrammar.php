@@ -3,11 +3,15 @@
 namespace Nacosvel\DatabaseManager\Database\Query\Grammars;
 
 use Illuminate\Database\Query\Grammars\MySqlGrammar as Grammar;
-use Illuminate\Support\Facades\DB;
-use Nacosvel\DatabaseManager\Facades\TM;
+use Nacosvel\TransactionProcessingServices\Concerns\DistributedTransactionGrammar;
 
 class MySqlGrammar extends Grammar
 {
+    use DistributedTransactionGrammar {
+        DistributedTransactionGrammar::compileSavepoint as grammarSavepoint;
+        DistributedTransactionGrammar::compileSavepointRollBack as grammarSavepointRollBack;
+    }
+
     /**
      * Compile the SQL statement to define a savepoint.
      *
@@ -18,10 +22,10 @@ class MySqlGrammar extends Grammar
     #[\Override]
     public function compileSavepoint($name): string
     {
-        $statement = 'SAVEPOINT ' . $name;
-        if (TM::isInternalInvocation()) {
-            TM::queries($statement, [], DB::getConfig());
-        }
+        $statement = $this->grammarSavepoint($name);
+        // if (false === TM::isInternalInvocation()) {
+        //     TM::queries($statement, [], DB::getConfig());
+        // }
         return $statement;
     }
 
@@ -35,71 +39,11 @@ class MySqlGrammar extends Grammar
     #[\Override]
     public function compileSavepointRollBack($name): string
     {
-        $statement = 'ROLLBACK TO SAVEPOINT ' . $name;
-        if (TM::isInternalInvocation()) {
-            TM::queries($statement, [], DB::getConfig());
-        }
+        $statement = $this->grammarSavepointRollBack($name);
+        // if (false === TM::isInternalInvocation()) {
+        //     TM::queries($statement, [], DB::getConfig());
+        // }
         return $statement;
-    }
-
-    /**
-     * Compile the SQL statement to start an XA transaction.
-     *
-     * @param string $xid The transaction ID.
-     *
-     * @return string The SQL statement to start an XA transaction.
-     */
-    public function compileXaStart(string $xid): string
-    {
-        return "XA START '{$xid}'";
-    }
-
-    /**
-     * Compile the SQL statement to end an XA transaction.
-     *
-     * @param string $xid The transaction ID.
-     *
-     * @return string The SQL statement to end an XA transaction.
-     */
-    public function compileXaEnd(string $xid): string
-    {
-        return "XA END '{$xid}'";
-    }
-
-    /**
-     * Compile the SQL statement to prepare an XA transaction.
-     *
-     * @param string $xid The transaction ID.
-     *
-     * @return string The SQL statement to prepare an XA transaction.
-     */
-    public function compileXaPrepare(string $xid): string
-    {
-        return "XA PREPARE '{$xid}'";
-    }
-
-    /**
-     * Compile the SQL statement to commit an XA transaction.
-     *
-     * @param string $xid The transaction ID.
-     *
-     * @return string The SQL statement to commit an XA transaction.
-     */
-    public function compileXaCommit(string $xid): string
-    {
-        return "XA COMMIT '{$xid}'";
-    }
-
-    /**
-     * Compile the SQL statement to roll back an XA transaction.
-     *
-     * @param string $xid The transaction ID.
-     *
-     * @return string The SQL statement to roll back an XA transaction.
-     */
-    public function compileXaRollback(string $xid): string
-    {
-        return "XA ROLLBACK '{$xid}'";
     }
 
 }

@@ -3,15 +3,14 @@
 namespace Nacosvel\DatabaseManager\Database\Connectors;
 
 use Illuminate\Database\MySqlConnection as Connection;
-use Nacosvel\DatabaseManager\Database\Concerns\ResourceManagerXA;
 use Nacosvel\DatabaseManager\Database\Query\Builder;
 use Nacosvel\DatabaseManager\Database\Query\Grammars\MySqlGrammar;
 use Nacosvel\DatabaseManager\Database\Query\Processors\MySqlProcessor;
-use Nacosvel\DatabaseManager\Facades\TM;
+use Nacosvel\TransactionProcessingServices\Concerns\DistributedTransactionProcessor;
 
 class MySqlConnection extends Connection
 {
-    use ResourceManagerXA;
+    use DistributedTransactionProcessor;
 
     /**
      * Get the default query grammar instance.
@@ -61,8 +60,8 @@ class MySqlConnection extends Connection
     {
         $result = parent::affectingStatement($query, $bindings);
 
-        TM::queries($query, $bindings, $this->getConfig(), 0, $result, $this->query()->getCheckResult());
-        $this->query()->setCheckResult(false);
+        // TM::queries($query, $bindings, $this->getConfig(), 0, $result, $this->query()->getCheckResult());
+        // $this->query()->setCheckResult(false);
 
         return $result;
     }
@@ -80,8 +79,8 @@ class MySqlConnection extends Connection
     {
         $result = parent::statement($query, $bindings);
 
-        TM::queries($query, $bindings, $this->getConfig(), $this->getRawPdo()->lastInsertId(), $result, $this->query()->getCheckResult());
-        $this->query()->setCheckResult(false);
+        // TM::queries($query, $bindings, $this->getConfig(), $this->getRawPdo()->lastInsertId(), $result, $this->query()->getCheckResult());
+        // $this->query()->setCheckResult(false);
 
         return $result;
     }
@@ -93,7 +92,7 @@ class MySqlConnection extends Connection
      *
      * @return mixed
      */
-    public function getDatabaseConfig(string $option = null): mixed
+    public function getConnectionConfiguration(string $option = null): mixed
     {
         return $this->getConfig($option);
     }
