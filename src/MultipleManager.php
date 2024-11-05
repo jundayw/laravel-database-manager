@@ -2,7 +2,9 @@
 
 namespace Nacosvel\DatabaseManager;
 
-class MultipleManager extends MultipleInstanceManager
+use Nacosvel\Contracts\DatabaseManager\DatabaseManagerInterface;
+
+class MultipleManager extends MultipleInstanceManager implements DatabaseManagerInterface
 {
     /**
      * @inheritDoc
