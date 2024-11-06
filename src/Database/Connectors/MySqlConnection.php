@@ -6,7 +6,7 @@ use Illuminate\Database\MySqlConnection as Connection;
 use Nacosvel\DatabaseManager\Database\Query\Builder;
 use Nacosvel\DatabaseManager\Database\Query\Grammars\MySqlGrammar;
 use Nacosvel\DatabaseManager\Database\Query\Processors\MySqlProcessor;
-use Nacosvel\TransactionProcessingServices\Concerns\DistributedTransactionProcessor;
+use Nacosvel\TransactionManager\Concerns\DistributedTransactionProcessor;
 
 class MySqlConnection extends Connection
 {

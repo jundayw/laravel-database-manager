@@ -3,7 +3,7 @@
 namespace Nacosvel\DatabaseManager\Database\Query\Grammars;
 
 use Illuminate\Database\Query\Grammars\MySqlGrammar as Grammar;
-use Nacosvel\TransactionProcessingServices\Concerns\DistributedTransactionGrammar;
+use Nacosvel\TransactionManager\Concerns\DistributedTransactionGrammar;
 
 class MySqlGrammar extends Grammar
 {
@@ -23,7 +23,7 @@ class MySqlGrammar extends Grammar
     public function compileSavepoint($name): string
     {
         $statement = $this->grammarSavepoint($name);
-        // if (false === TM::isInternalInvocation()) {
+        // if (false === TM::inGlobalTransaction()) {
         //     TM::queries($statement, [], DB::getConfig());
         // }
         return $statement;
@@ -40,7 +40,7 @@ class MySqlGrammar extends Grammar
     public function compileSavepointRollBack($name): string
     {
         $statement = $this->grammarSavepointRollBack($name);
-        // if (false === TM::isInternalInvocation()) {
+        // if (false === TM::inGlobalTransaction()) {
         //     TM::queries($statement, [], DB::getConfig());
         // }
         return $statement;

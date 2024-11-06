@@ -15,10 +15,9 @@
     ],
     "require": {
         "php": ">=8.0",
-        "nacosvel/database-manager": "^1.0",
         "nacosvel/database-manager-contracts": "^1.0",
-        "nacosvel/transaction-manager-services": "^1.0",
-        "nacosvel/transaction-processing-services": "^1.0"
+        "nacosvel/datasource-manager": "^1.0",
+        "nacosvel/transaction-manager": "^1.0"
     },
     "autoload": {
         "psr-4": {

@@ -6,8 +6,10 @@ use Illuminate\Database\Connection;
 use Illuminate\Support\ServiceProvider;
 use Nacosvel\Contracts\DatabaseManager\DatabaseManagerInterface;
 use Nacosvel\DatabaseManager\Database\Connectors\MySqlConnection;
-use Nacosvel\TransactionManagerServices\ResourceManagerServices;
-use Nacosvel\TransactionManagerServices\TransactionManagerServices;
+use Nacosvel\DataSourceManager\DatabaseManager;
+use Nacosvel\DataSourceManager\TransactionManager;
+use Nacosvel\TransactionManager\ResourceManager as RM;
+use Nacosvel\TransactionManager\TransactionManager as TM;
 
 class DatabaseManagerServiceProvider extends ServiceProvider
 {
@@ -28,17 +30,17 @@ class DatabaseManagerServiceProvider extends ServiceProvider
             $multipleDatabaseManager = new MultipleManager($app);
             return $multipleDatabaseManager->extend($multipleDatabaseManager->getDefaultInstance(), function ($app, $config) {
                 return new DatabaseManager($app['db']);
-            })->extend(TransactionManagerServices::class, function ($app, $config) {
-                return new TransactionManager($this->instance(), new TransactionManagerServices);
-            })->extend(ResourceManagerServices::class, function ($app, $config) {
-                return new TransactionManager($this->instance(), new ResourceManagerServices);
+            })->extend(TM::class, function ($app, $config) {
+                return new TransactionManager($this->instance(), new TM);
+            })->extend(RM::class, function ($app, $config) {
+                return new TransactionManager($this->instance(), new RM);
             });
         });
-        $this->app->singleton(TransactionManagerServices::class, function () {
-            return app(DatabaseManagerInterface::class)->instance(TransactionManagerServices::class);
+        $this->app->singleton(TM::class, function () {
+            return app(DatabaseManagerInterface::class)->instance(TM::class);
         });
-        $this->app->singleton(ResourceManagerServices::class, function () {
-            return app(DatabaseManagerInterface::class)->instance(ResourceManagerServices::class);
+        $this->app->singleton(RM::class, function () {
+            return app(DatabaseManagerInterface::class)->instance(RM::class);
         });
     }
 
@@ -70,8 +72,8 @@ class DatabaseManagerServiceProvider extends ServiceProvider
     {
         return [
             DatabaseManagerInterface::class,
-            TransactionManagerServices::class,
-            ResourceManagerServices::class,
+            TM::class,
+            RM::class,
         ];
     }
 

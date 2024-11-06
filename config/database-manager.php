@@ -1,8 +1,8 @@
 <?php
 
 use Nacosvel\Contracts\DatabaseManager\DatabaseManagerInterface;
-use Nacosvel\TransactionManagerServices\ResourceManagerServices;
-use Nacosvel\TransactionManagerServices\TransactionManagerServices;
+use Nacosvel\TransactionManager\ResourceManager;
+use Nacosvel\TransactionManager\TransactionManager;
 
 return [
 
@@ -23,14 +23,14 @@ return [
     */
 
     'drivers' => [
-        DatabaseManagerInterface::class   => [
+        DatabaseManagerInterface::class => [
             'driver' => DatabaseManagerInterface::class,
         ],
-        ResourceManagerServices::class    => [
-            'driver' => ResourceManagerServices::class,
+        ResourceManager::class          => [
+            'driver' => ResourceManager::class,
         ],
-        TransactionManagerServices::class => [
-            'driver' => TransactionManagerServices::class,
+        TransactionManager::class       => [
+            'driver' => TransactionManager::class,
         ],
     ],
 

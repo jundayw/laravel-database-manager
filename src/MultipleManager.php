@@ -3,6 +3,7 @@
 namespace Nacosvel\DatabaseManager;
 
 use Nacosvel\Contracts\DatabaseManager\DatabaseManagerInterface;
+use Nacosvel\DataSourceManager\MultipleManager as MultipleInstanceManager;
 
 class MultipleManager extends MultipleInstanceManager implements DatabaseManagerInterface
 {

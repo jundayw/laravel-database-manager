@@ -4,7 +4,8 @@ namespace Nacosvel\DatabaseManager\Facades;
 
 use Illuminate\Database\DatabaseManager;
 use Illuminate\Support\Facades\Facade;
-use Nacosvel\TransactionManagerServices\TransactionManagerServices;
+use Nacosvel\DataSourceManager\TransactionManager;
+use PDO;
 
 /**
  * @method static mixed connection(string $name = null) Get a database connection instance.
@@ -27,10 +28,9 @@ use Nacosvel\TransactionManagerServices\TransactionManagerServices;
  * @method static void middlewareRollback()
  *
  * @see DatabaseManager
- * @see \Nacosvel\DatabaseManager\DatabaseManager
+ * @see \Nacosvel\DataSourceManager\DatabaseManager
  * @see TransactionManager
- * @see TransactionManagerServices
- *
+ * @see \Nacosvel\TransactionManager\TransactionManager
  */
 class TM extends Facade
 {
@@ -41,7 +41,7 @@ class TM extends Facade
      */
     protected static function getFacadeAccessor(): string
     {
-        return TransactionManagerServices::class;
+        return \Nacosvel\TransactionManager\TransactionManager::class;
     }
 
 }
